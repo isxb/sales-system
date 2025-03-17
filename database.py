@@ -67,5 +67,3 @@ def delete_product(product_id):
     cursor.execute("DELETE FROM produtos WHERE id = ?", (product_id,))
     conn.commit()
     conn.close()
-    
-    
