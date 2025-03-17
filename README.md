@@ -1,1 +1,1 @@
-# sales-system
+# sales-system (Sistema de Vendas)
