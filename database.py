@@ -1,16 +1,17 @@
 import sqlite3
+import os
 from pathlib import Path
 from datetime import datetime
 
 # Caminho para o banco de dados
-DB_PATH = Path(__file__).parent / "cantina.db"
+DB_PATH = Path(os.path.dirname(os.path.abspath(__file__))) / "cantina.db"
 
 def create_database():
     """Cria o banco de dados e as tabelas necessárias."""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
-    # Tabela de produtos
+    # TABELA DE PRODUTOS
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS produtos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,21 +24,21 @@ def create_database():
         )
     ''')
 
-    # Tabela de vendas
+    # TABELA DE VENDAS
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS vendas (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             produto_id INTEGER NOT NULL,
-            quantidade INTEGER NOT NULL,
+            quantidade INTEGER NOT NULL CHECK (quantidade >= 0),
             data TEXT NOT NULL,
             hora TEXT NOT NULL,
-            total REAL NOT NULL,
-            FOREIGN KEY (produto_id) REFERENCES produtos (id)
+            total REAL NOT NULL CHECK (total >= 0),
+            FOREIGN KEY (produto_id) REFERENCES produtos (id) ON DELETE CASCADE
         )
     ''')
 
-    conn.commit()
-    conn.close()
+    conn.commit()  # Confirma as alterações
+    conn.close()   # Fecha a conexão
 
 def get_all_products():
     """Retorna todos os produtos cadastrados."""
@@ -67,3 +68,14 @@ def delete_product(product_id):
     cursor.execute("DELETE FROM produtos WHERE id = ?", (product_id,))
     conn.commit()
     conn.close()
+
+def get_product_name_by_id(produto_id):
+    """Retorna o nome do produto com base no ID."""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT nome FROM produtos WHERE id = ?", (produto_id,))
+    result = cursor.fetchone()
+    conn.close()
+    if result:
+        return result[0]
+    return None

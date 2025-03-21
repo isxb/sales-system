@@ -18,27 +18,27 @@ class MainWindow:
         self.produto_controller = ProdutoController()
         self.venda_controller = VendaController()
 
-        # Notebook para abas
+        # NOTEBOOK PARA ABAS
         self.notebook = ttk.Notebook(root)
         self.notebook.pack(expand=True, fill="both")
 
-        # Aba de Produtos
+        # ABA PRODUTOS
         self.produto_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.produto_frame, text="Produtos")
         self.criar_aba_produtos()
 
-        # Aba de Vendas
+        # ABA DE VENDAS
         self.venda_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.venda_frame, text="Vendas")
         self.criar_aba_vendas()
 
-        # Aba de Análise de Vendas
+        # ABA DE ANALISE
         self.analise_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.analise_frame, text="Análise de Vendas")
         self.criar_aba_analise()
 
     def criar_aba_produtos(self):
-        # Campos de entrada
+        # ENTRADAS DA ABA CADASTRO DE VENDAS
         ttk.Label(self.produto_frame, text="Nome:").grid(row=0, column=0, padx=5, pady=5)
         self.nome_entry = ttk.Entry(self.produto_frame)
         self.nome_entry.grid(row=0, column=1, padx=5, pady=5)
@@ -63,13 +63,13 @@ class MainWindow:
         self.preco_venda_entry = ttk.Entry(self.produto_frame)
         self.preco_venda_entry.grid(row=5, column=1, padx=5, pady=5)
 
-        # Botão para cadastrar produto
+        # BOTÃO DE CADASTRO
         ttk.Button(self.produto_frame, text="Cadastrar", command=self.cadastrar_produto).grid(row=6, column=1, pady=10)
 
     def cadastrar_produto(self):
         nome = self.nome_entry.get()
         tipo = self.tipo_entry.get()
-        validade = self.validade_entry.get_date().strftime("%d/%m/%Y")  # Formato dd/mm/yyyy
+        validade = self.validade_entry.get_date().strftime("%d/%m/%Y") 
         quantidade = self.quantidade_entry.get()
         preco_compra = self.preco_compra_entry.get()
         preco_venda = self.preco_venda_entry.get()
@@ -82,7 +82,7 @@ class MainWindow:
             messagebox.showerror("Erro", "Todos os campos são obrigatórios.")
 
     def criar_aba_vendas(self):
-        # Tabela de produtos
+        # TABELA DE PRODUTOS
         self.tree = ttk.Treeview(self.venda_frame, columns=("ID", "Nome", "Validade", "Preço", "Quantidade"), show="headings")
         self.tree.heading("ID", text="ID")
         self.tree.heading("Nome", text="Nome")
@@ -91,12 +91,12 @@ class MainWindow:
         self.tree.heading("Quantidade", text="Quantidade")
         self.tree.pack(expand=True, fill="both")
 
-        # Configuração das cores para a validade
+        # CONFIGURAÇÃO PARA A VALIDADE DOS PRODUTOS
         self.tree.tag_configure("red", background="red")
         self.tree.tag_configure("orange", background="orange")
         self.tree.tag_configure("green", background="lightgreen")
 
-        # Legenda para cores de validade
+        # LEGENDA DAS CORES INDICATIVAS DA VALIDADE
         legenda_frame = ttk.Frame(self.venda_frame)
         legenda_frame.pack(pady=5)
 
@@ -105,23 +105,23 @@ class MainWindow:
         ttk.Label(legenda_frame, text="Laranja: 3 a 10 dias", background="orange").pack(side="left", padx=5)
         ttk.Label(legenda_frame, text="Vermelho: Vencido", background="red").pack(side="left", padx=5)
 
-        # Botão para adicionar ao carrinho
+        # BOTÃO ADICIONAR AO CARRINHO
         ttk.Button(self.venda_frame, text="Adicionar ao Carrinho", command=self.adicionar_ao_carrinho).pack(pady=10)
 
-        # Botão para excluir item do estoque
+        # BOTÃO EXCLUIR ITEM DO ESTOQUE
         ttk.Button(self.venda_frame, text="Excluir Item", command=self.excluir_item).pack(pady=10)
 
-        # Carrinho de compras
+        # CARRINHO DE COMPRAS
         self.carrinho_listbox = tk.Listbox(self.venda_frame)
         self.carrinho_listbox.pack(expand=True, fill="both", pady=10)
 
-        # Botão para remover item do carrinho
+        # BOTÃO REMOVER DO CARRINHO DE COMPRAS
         ttk.Button(self.venda_frame, text="Remover Item", command=self.remover_do_carrinho).pack(pady=5)
 
-        # Botão para finalizar venda
+        # BOTÃO FINALIZAR VENDA
         ttk.Button(self.venda_frame, text="Finalizar Venda", command=self.finalizar_venda).pack(pady=10)
 
-        # Atualiza a tabela de produtos
+        # ATUALIZAR TABELA DE PRODUTOS
         self.atualizar_tabela_vendas()
 
     def atualizar_tabela_vendas(self):
@@ -130,7 +130,7 @@ class MainWindow:
         for produto in produtos:
             id, nome, validade, preco, quantidade = produto[0], produto[1], produto[3], produto[6], produto[4]
             
-            # Remove produtos com quantidade zero
+            # REMOVER PRODUTOS QUANTO A QUANTIDADE CHEGAR A 0
             if quantidade == 0:
                 self.produto_controller.delete_product(id)
                 continue
@@ -140,7 +140,6 @@ class MainWindow:
                 data_validade = datetime.strptime(validade, "%d/%m/%Y")
                 dias_restantes = (data_validade - datetime.now()).days
             except ValueError:
-                # Se a data estiver em um formato inválido, considera como vencido
                 dias_restantes = -1
 
             # Define a cor com base na validade
@@ -195,7 +194,7 @@ class MainWindow:
             messagebox.showerror("Erro", "O carrinho está vazio.")
             return
 
-        # Calcula o valor total da compra
+        # CALCULO PARA TOTAL DA COMPRA
         total_compra = 0
         produtos_vendidos = []
         for item in self.carrinho_listbox.get(0, tk.END):
@@ -205,7 +204,7 @@ class MainWindow:
             total_compra += total
             produtos_vendidos.append((nome, quantidade, total))
 
-        # Janela de confirmação
+        # JANELA DE CONFIRMAÇÃO
         confirm_window = tk.Toplevel(self.root)
         confirm_window.title("Confirmar Venda")
 
@@ -214,7 +213,9 @@ class MainWindow:
             ttk.Label(confirm_window, text=f"{produto[0]} - {produto[1]} unidade(s) - R$ {produto[2]:.2f}").pack()
         ttk.Label(confirm_window, text=f"Total: R$ {total_compra:.2f}").pack(pady=10)
 
+        # BOTÃO DE CONFIRMAÇÃO
         ttk.Button(confirm_window, text="Confirmar", command=lambda: self.confirmar_venda(produtos_vendidos, confirm_window)).pack(pady=10)
+        # BOTÃO DE CANCELAMENTO
         ttk.Button(confirm_window, text="Cancelar", command=confirm_window.destroy).pack(pady=10)
 
     def confirmar_venda(self, produtos_vendidos, confirm_window):
@@ -223,7 +224,6 @@ class MainWindow:
             produto_id = self.produto_controller.get_product_id_by_name(nome)
             if produto_id:
                 self.venda_controller.registrar_venda(produto_id, quantidade, total)
-                # Atualiza a quantidade no estoque
                 produto_info = self.produto_controller.get_product_by_id(produto_id)
                 nova_quantidade = produto_info[4] - quantidade
                 self.produto_controller.update_product_quantity(produto_id, nova_quantidade)
@@ -235,59 +235,25 @@ class MainWindow:
         self.atualizar_tabela_analise()
 
     def criar_aba_analise(self):
-        # Tabela de vendas
-        self.analise_tree = ttk.Treeview(self.analise_frame, columns=("Venda", "Produtos", "Total"), show="headings")
-        self.analise_tree.heading("Venda", text="Venda")
-        self.analise_tree.heading("Produtos", text="Produtos")
+        # TABELA DE VENDAS
+        self.analise_tree = ttk.Treeview(self.analise_frame, columns=("Data/Hora", "Quantidade", "Produto", "Total"), show="headings")
+        self.analise_tree.heading("Data/Hora", text="Data/Hora")
+        self.analise_tree.heading("Quantidade", text="Quantidade")
+        self.analise_tree.heading("Produto", text="Produto")
         self.analise_tree.heading("Total", text="Total")
         self.analise_tree.pack(expand=True, fill="both")
 
-        # Botão para exportar para Excel
+        # BOTÃO EXPORTAR PARA EXCEL
         ttk.Button(self.analise_frame, text="Exportar para Excel", command=self.exportar_para_excel).pack(pady=10)
 
-        # Botão para apagar dados da tabela
-        self.btn_apagar_dados = ttk.Button(self.analise_frame, text="Apagar Dados", command=self.apagar_dados, style="Red.TButton")
-        self.btn_apagar_dados.pack(side="left", padx=10, pady=10)
+        # BOTÃO PARA EXCLUIR TODOS OS DADOS
+        ttk.Button(self.analise_frame, text="Excluir Todos os Dados", command=self.confirmar_exclusao).pack(pady=10)
 
-        # Atualiza a tabela de análise
+        # ATUALIZAR TABELA DE ANÁLISE
         self.atualizar_tabela_analise()
 
-    def apagar_dados(self):
-        confirm = messagebox.askyesno("Confirmar", "Tem certeza que deseja apagar todos os dados da tabela?")
-        if confirm:
-            self.venda_controller.apagar_todas_vendas()
-            self.atualizar_tabela_analise()
-            messagebox.showinfo("Sucesso", "Dados apagados com sucesso!")
-
-    def atualizar_tabela_analise(self):
-        self.analise_tree.delete(*self.analise_tree.get_children())
-        vendas = self.venda_controller.get_all_sales()
-        vendas_agrupadas = {}
-
-        # Agrupa as vendas por ID de venda
-        for venda in vendas:
-            venda_id = venda[0]
-            if venda_id not in vendas_agrupadas:
-                vendas_agrupadas[venda_id] = {
-                    "data": venda[3],
-                    "hora": venda[4],
-                    "produtos": [],
-                    "total": 0
-                }
-            produto_nome = self.produto_controller.get_product_name_by_id(venda[1])
-            vendas_agrupadas[venda_id]["produtos"].append(f"{produto_nome} {venda[2]} unidades")
-            vendas_agrupadas[venda_id]["total"] += venda[5]
-
-        # Insere as vendas agrupadas na tabela
-        for venda_id, info in vendas_agrupadas.items():
-            produtos_str = "\n".join(info["produtos"])
-            self.analise_tree.insert("", tk.END, values=(
-                f"Venda {venda_id} {info['data']} {info['hora']}",
-                produtos_str,
-                f"Valor total: R$ {info['total']:.2f}"
-            ))
-
     def exportar_para_excel(self):
+        """Exporta os dados das vendas para um arquivo Excel."""
         vendas = self.venda_controller.get_all_sales()
         if not vendas:
             messagebox.showerror("Erro", "Nenhuma venda encontrada para exportar.")
@@ -311,3 +277,41 @@ class MainWindow:
         if file_path:
             wb.save(file_path)
             messagebox.showinfo("Sucesso", "Dados exportados para Excel com sucesso!")
+
+    def confirmar_exclusao(self):
+        """Solicita confirmação do usuário para excluir todos os dados."""
+        # Caixa de diálogo para o usuário digitar "confirmar"
+        confirmacao = simpledialog.askstring("Confirmar Exclusão", "Digite 'confirmar' para excluir todos os dados:")
+
+        if confirmacao == "confirmar":
+            # Exclui todos os dados da tabela de vendas
+            self.venda_controller.apagar_todas_vendas()
+            # Atualiza a tabela de análise
+            self.atualizar_tabela_analise()
+            messagebox.showinfo("Sucesso", "Todos os dados foram excluídos com sucesso!")
+        else:
+            messagebox.showwarning("Cancelado", "A exclusão foi cancelada.")
+
+    def atualizar_tabela_analise(self):
+        """Atualiza a tabela de análise com os dados das vendas."""
+        self.analise_tree.delete(*self.analise_tree.get_children())  # Limpa a tabela
+        vendas = self.venda_controller.get_all_sales()  # Obtém todas as vendas
+
+        for venda in vendas:
+            venda_id = venda[0]  # ID da venda
+            produto_id = venda[1]  # ID do produto
+            quantidade = venda[2]  # Quantidade vendida
+            data = venda[3]  # Data da venda
+            hora = venda[4]  # Hora da venda
+            total = venda[5]  # Total da venda
+
+            # Obtém o nome do produto com base no ID
+            produto_nome = self.produto_controller.get_product_name_by_id(produto_id)
+
+            # Insere os dados na tabela
+            self.analise_tree.insert("", tk.END, values=(
+                f"{data} {hora}",  # Coluna "Data/Hora"
+                quantidade,  # Coluna "Quantidade"
+                produto_nome,  # Coluna "Produto"
+                f"R$ {total:.2f}"  # Coluna "Total"
+            ))

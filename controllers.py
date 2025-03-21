@@ -3,6 +3,7 @@ import sqlite3
 from models import Produto, Venda
 from datetime import datetime
 
+#PRODUTOS CADASTRADOS
 class ProdutoController:
     def cadastrar_produto(self, nome, tipo, validade, quantidade, preco_compra, preco_venda):
         conn = sqlite3.connect(DB_PATH)
@@ -13,7 +14,7 @@ class ProdutoController:
         ''', (nome, tipo, validade, quantidade, preco_compra, preco_venda))
         conn.commit()
         conn.close()
-
+#MOSTRA TODOS OS PRODUTOS
     def get_all_products(self):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
@@ -21,7 +22,7 @@ class ProdutoController:
         produtos = cursor.fetchall()
         conn.close()
         return produtos
-
+#DELETA UM PRODUTO SELECIONADO
     def delete_product(self, product_id):
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
@@ -52,6 +53,8 @@ class ProdutoController:
         produto_nome = cursor.fetchone()
         conn.close()
         return produto_nome[0] if produto_nome else None
+    
+#ATUALIZA QUANTIDADE DO PRODUTO
 
     def update_product_quantity(self, product_id, quantidade):
         conn = sqlite3.connect(DB_PATH)
@@ -104,3 +107,11 @@ class VendaController:
         cursor.execute("DELETE FROM vendas")
         conn.commit()
         conn.close()
+        
+def apagar_todas_vendas(self):
+    """Remove todas as vendas do banco de dados."""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM vendas")
+    conn.commit()
+    conn.close()
