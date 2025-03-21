@@ -1,17 +1,17 @@
 # Sistema de Vendas para Cantinas
 
 ## 📌 Descrição
-Este é um sistema de vendas desenvolvido em **Django** com **SQLite**, focado em cantinas. A aplicação permite o cadastro de produtos, gerenciamento de vendas e exibição de relatórios e análises sobre os produtos vendidos.
+Este é um sistema de vendas desenvolvido em **Python** com **SQLite**, focado em cantinas. A aplicação permite o cadastro de produtos, gerenciamento de vendas e exibição de relatórios e análises sobre os produtos vendidos.
 
 ## 🚀 Funcionalidades
 ### 1️⃣ Registro de Produto
 - Cadastro de produtos com:
-  - Tipo
-  - Nome
-  - Validade
-  - Quantidade
-  - Valor de compra
-  - Valor de venda
+- Tipo
+- Nome
+- Validade
+- Quantidade
+- Valor de compra
+- Valor de venda
 
 ### 2️⃣ Vendas
 - Exibição dos produtos cadastrados
@@ -20,9 +20,9 @@ Este é um sistema de vendas desenvolvido em **Django** com **SQLite**, focado e
 
 ### 3️⃣ Controle
 - Histórico de vendas com:
-  - Horário e data
-  - Produtos vendidos
-  - Preço total da venda
+- Horário e data
+- Produtos vendidos
+- Preço total da venda
 
 ### 4️⃣ Análise de Vendas
 - Gráficos das vendas
@@ -36,12 +36,9 @@ Este é um sistema de vendas desenvolvido em **Django** com **SQLite**, focado e
 - **Matplotlib e Pandas** (Para análise de dados e geração de gráficos)
 
 ## 📌 Melhorias Futuras
-- Interface mais intuitiva e responsiva
+- Interface mais intuitiva
 - Implementação de um sistema de autenticação para controle de acesso
-- Versão desktop com interface gráfica (GUI) e executável
-
-## 📄 Licença
-Este projeto está sob a licença **MIT**. Sinta-se à vontade para usar e modificar!
+- Versão desktop completa.
 
 ---
 **Desenvolvido por Igor Xavier de Brito**
